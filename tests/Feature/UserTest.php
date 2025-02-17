@@ -58,6 +58,18 @@ class UserTest extends TestCase
             ]);
     }
 
+    public function test_created_user_cannot_get_his_data_without_valid_token_validation(): void
+    {
+        $userData = $this->userData;
+        
+        $token = $this->createUserAndGetToken($userData);
+        $token .= "invalidSufix";
+
+        $user = $this->getJson('api/user', ['Authorization' => "Bearer $token"]);
+
+        $user->assertUnauthorized();
+    }
+
     private function createUserAndGetToken(array $userData): string
     {
         $user = $this->postJson('api/user', $userData);
