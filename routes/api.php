@@ -22,6 +22,8 @@ Route::middleware('jwt.auth')->group(function () {
     Route::patch('/user', [UserController::class, 'edit']);
 
     Route::delete('/user', [UserController::class, 'delete']);
+
+    Route::post('/user/address', [UserController::class, 'addAddress']);
 });
 
 Route::post('/user', [UserController::class, 'create']);

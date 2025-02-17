@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Services\UserService;
+use App\Http\Requests\AddAddressRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\EditUserRequest;
 use App\Models\User;
@@ -91,5 +92,26 @@ class UserController extends Controller
                 'message'   => 'User cannot be deleted',
                 'status'    => 'error'
             ]);
+    }
+
+    public function addAddress(AddAddressRequest $request): JsonResponse
+    {
+        $request->validated();
+
+        $userId = auth()->user()->id;
+        $userUpdated = $this->userService->addNewAddress(
+            $userId,
+            $request->street,
+            $request->number,
+            $request->neighborhood,
+            $request->complement,
+            $request->zip_code
+        );
+
+        return response()->json([
+            'message'   => 'Address added successfully',
+            'status'    => 'success',
+            'user'      => $userUpdated
+        ]);
     }
 }

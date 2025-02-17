@@ -67,4 +67,15 @@ class Address {
     {
         $this->zipCode = $zipCode;
     }
+
+    public function toPersistenceArray(): array
+    {
+        return [
+            'street'       => $this->street,
+            'number'       => $this->number,
+            'neighborhood' => $this->neighborhood,
+            'complement'   => $this->complement ?? '',
+            'zip_code'     => $this->zipCode,
+        ];
+    }
 }

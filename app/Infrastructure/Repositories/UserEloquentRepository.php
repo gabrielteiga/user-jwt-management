@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repositories;
 
+use App\Domain\Entities\Address;
 use App\Domain\Entities\User;
 use App\Domain\Repositories\UserRepositoryInterface;
 use App\Models\User as ModelsUser;
@@ -47,6 +48,14 @@ class UserEloquentRepository implements UserRepositoryInterface {
         $userModel->delete();
 
         return $userModel ? true : false;
+    }
+
+    public function addNewAddres(int $userId, Address $address): User
+    {
+        $userModel = ModelsUser::findOrFail($userId);
+        $userModel->address()->create($address->toPersistenceArray());
+
+        return $this->createUserfromEloquentModel($userModel);
     }
 
     private function createUserfromEloquentModel(ModelsUser $userModel): User

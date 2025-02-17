@@ -2,6 +2,7 @@
 
 namespace App\Domain\Repositories;
 
+use App\Domain\Entities\Address;
 use App\Domain\Entities\User;
 
 interface UserRepositoryInterface {
@@ -9,4 +10,5 @@ interface UserRepositoryInterface {
     public function findUserById(int $userId): ?User;
     public function updateUser(User $user): ?User;
     public function deleteById(int $userId): bool;
+    public function addNewAddres(int $userId, Address $address): User;
 }

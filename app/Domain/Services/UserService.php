@@ -2,6 +2,7 @@
 
 namespace App\Domain\Services;
 
+use App\Domain\Entities\Address;
 use App\Domain\Entities\User;
 use App\Domain\Repositories\UserRepositoryInterface;
 
@@ -52,5 +53,18 @@ class UserService {
     public function deleteUser(int $userId): bool
     {
         return $this->userRepository->deleteById($userId);
+    }
+
+    public function addNewAddress(int $userId, string $street, string $number, string $neighborhood, string $complement, string $zip_code): User
+    {
+        $address = new Address(
+            $street,
+            $number,
+            $neighborhood,
+            $complement ?? '',
+            $zip_code
+        );
+
+        return $this->userRepository->addNewAddres($userId, $address);
     }
 }
