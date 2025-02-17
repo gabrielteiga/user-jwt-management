@@ -25,4 +25,18 @@ class UserEloquentRepository implements UserRepositoryInterface {
             $userModel->phone_number
         );
     }
+
+    public function findUserById(int $userId): ?User
+    {
+        $userModel = ModelsUser::with('address')->find($userId);
+        
+        return new User(
+            $userModel->name,
+            $userModel->email,
+            $userModel->password,
+            $userModel->cpf,
+            $userModel->phone_number,
+            $userModel->address->all()
+        );
+    }
 }

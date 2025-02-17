@@ -13,7 +13,7 @@ class UserService {
         $this->userRepository = $userRepository;
     }
 
-    public function createUser(string $name, string $email, string $password, string $cpf, string $phone_number)
+    public function createUser(string $name, string $email, string $password, string $cpf, string $phone_number): User
     {
         $user = new User(
             $name,
@@ -24,5 +24,10 @@ class UserService {
         );
 
         return $this->userRepository->create($user);
+    }
+
+    public function getUserById(int $userId): User
+    {
+        return $this->userRepository->findUserById($userId);
     }
 }
