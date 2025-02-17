@@ -137,6 +137,43 @@ class UserTest extends TestCase
             ]);
     }
 
+    public function test_user_can_add_new_address_without_complement(): void
+    {
+        $token = $this->createUserAndGetToken($this->userData);
+
+        $address = [
+            'street'        => 'Rua Joãozinho da silva',
+            'number'        => '238',
+            'neighborhood'  => 'Bela Vista',
+            'zip_code'      => '18000000'
+        ];
+
+        $response = $this->postJson('api/user/address', $address, ['Authorization' => "Bearer $token"]);
+
+        $response->assertOk()
+            ->assertJsonStructure([
+                'message',
+                'status',
+                'user'
+            ]);
+    }
+
+    public function test_user_cannot_add_new_address_without_street(): void
+    {
+        $token = $this->createUserAndGetToken($this->userData);
+
+        $address = [
+            'number'        => '238',
+            'neighborhood'  => 'Bela Vista',
+            'complement'    => 'casa',
+            'zip_code'      => '18000000'
+        ];
+
+        $response = $this->postJson('api/user/address', $address, ['Authorization' => "Bearer $token"]);
+
+        $response->assertBadRequest();
+    }
+
     private function createUserAndGetToken(array $userData): string
     {
         $user = $this->postJson('api/user', $userData);
