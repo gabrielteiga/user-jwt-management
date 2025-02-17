@@ -12,7 +12,7 @@
 
 ### Ajustes e melhorias
 
-* Projeto foi desenvolvido em PHP 8, podendo ser um impeditivo para a execução do mesmo em algumas versões mais antigas;
+* Projeto foi desenvolvido em PHP 8, podendo ser um impeditivo para a execução do mesmo em algumas versões mais antigas. Para controlar esse problema foi criado um ambiente com Docker em PHP 8, não necessitando que o servidor ou local de execução necessite dessa versão atualizada do PHP;
 * Incluir a pasta vendor no repositório não é uma boa prática, mas foi inclusa apenas para facilitar a execução do projeto;
 
 ## 💻 Pré-requisitos
