@@ -58,7 +58,7 @@ class UserTest extends TestCase
             ]);
     }
 
-    public function test_created_user_cannot_get_his_data_without_valid_token_validation(): void
+    public function test_user_cannot_get_his_data_without_valid_token_validation(): void
     {
         $userData = $this->userData;
         
@@ -70,7 +70,7 @@ class UserTest extends TestCase
         $user->assertUnauthorized();
     }
 
-    public function test_can_edit_user_name_cpf_and_phone_number_with_valid_token_header(): void
+    public function test_user_can_edit_name_cpf_and_phone_number_with_valid_token_header(): void
     {
         $token = $this->createUserAndGetToken($this->userData);
 
@@ -90,6 +90,29 @@ class UserTest extends TestCase
                 'cpf'           => $editUserData['cpf'],
                 'phone_number'  => $editUserData['phone_number']
             ]);
+    }
+
+    public function test_user_can_delete_his_account_using_valid_token(): void
+    {
+        $token = $this->createUserAndGetToken($this->userData);
+
+        $response = $this->deleteJson('api/user', [], ['Authorization' => "Bearer $token"]);
+
+        $response->assertOk()
+            ->assertJson([
+                'message'   => 'User deleted successfully',
+                'status'    => 'success'
+            ]);
+    }
+
+    public function test_user_cannot_delete_his_account_without_valid_token(): void
+    {
+        $token = $this->createUserAndGetToken($this->userData);
+        $token .= 'invalidSufix';
+
+        $response = $this->deleteJson('api/user', [], ['Authorization' => "Bearer $token"]);
+
+        $response->assertUnauthorized();
     }
 
     private function createUserAndGetToken(array $userData): string
