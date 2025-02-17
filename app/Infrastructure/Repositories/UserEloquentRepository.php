@@ -40,6 +40,15 @@ class UserEloquentRepository implements UserRepositoryInterface {
         return $user;
     }
 
+    public function deleteById(int $userId): bool
+    {
+        $userModel = ModelsUser::find($userId);
+
+        $userModel->delete();
+
+        return $userModel ? true : false;
+    }
+
     private function createUserfromEloquentModel(ModelsUser $userModel): User
     {
         return new User(

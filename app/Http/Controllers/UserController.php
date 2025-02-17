@@ -17,7 +17,7 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         $userId = auth()->id();
 
@@ -59,7 +59,7 @@ class UserController extends Controller
             ], 422);
     }
 
-    public function edit(EditUserRequest $request)
+    public function edit(EditUserRequest $request): JsonResponse
     {
         $request->validated();
 
@@ -75,5 +75,21 @@ class UserController extends Controller
         $userUpdated = $this->userService->editUserData($userId, $bodyRequest);
         
         return response()->json($userUpdated, 200);
+    }
+
+    public function delete(): JsonResponse
+    {
+        $userId = auth()->user()->id;
+
+        $status = $this->userService->deleteUser($userId);
+
+        return $status ?
+            response()->json([
+                'message'   => 'User deleted successfully',
+                'status'    => 'success'
+            ], 200) : response()->json([
+                'message'   => 'User cannot be deleted',
+                'status'    => 'error'
+            ]);
     }
 }

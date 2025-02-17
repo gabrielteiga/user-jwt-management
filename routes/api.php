@@ -20,6 +20,8 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/user', [UserController::class, 'index']);
     
     Route::patch('/user', [UserController::class, 'edit']);
+
+    Route::delete('/user', [UserController::class, 'delete']);
 });
 
 Route::post('/user', [UserController::class, 'create']);

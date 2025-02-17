@@ -44,8 +44,13 @@ class UserService {
         }
 
         $user = $this->userRepository->updateUser($user);
-        // unset($user->password);
+        unset($user->password);
 
         return $user;
+    }
+
+    public function deleteUser(int $userId): bool
+    {
+        return $this->userRepository->deleteById($userId);
     }
 }
