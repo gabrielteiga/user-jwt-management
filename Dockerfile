@@ -18,7 +18,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Configura o Laravel
 WORKDIR /var/www
 COPY . .
-RUN composer update
 RUN composer install \
     && composer require tymon/jwt-auth \
     && php artisan jwt:secret
@@ -26,6 +25,7 @@ RUN composer install \
 # Define permissões
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Exposição da porta padrão do Laravel
-EXPOSE 8000
-CMD ["php", "artisan", "serve"]
+COPY ./docker/entrypoint/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["sh", "/usr/local/bin/docker-entrypoint.sh"]
