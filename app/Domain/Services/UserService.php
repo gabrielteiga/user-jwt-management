@@ -30,4 +30,22 @@ class UserService {
     {
         return $this->userRepository->findUserById($userId);
     }
+
+    public function editUserData(int $userId, array $dataToUpdate): User
+    {
+        $user = $this->userRepository->findUserById($userId);
+
+        foreach ($dataToUpdate as $key => $value) 
+        {
+            if (property_exists($user, $key))
+            {
+                $user->$key = $value;
+            }
+        }
+
+        $user = $this->userRepository->updateUser($user);
+        // unset($user->password);
+
+        return $user;
+    }
 }

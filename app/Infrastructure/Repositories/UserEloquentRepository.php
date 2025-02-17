@@ -27,6 +27,19 @@ class UserEloquentRepository implements UserRepositoryInterface {
         return $this->createUserfromEloquentModel($userModel);
     }
 
+    public function updateUser(User $user): ?User
+    {
+        $userModel = ModelsUser::where('email', $user->email)->first();
+
+        foreach (get_class_vars($user::class) as $key => $value)
+            if(!($key === 'addresses'))
+                $userModel->$key = $user->$key;
+
+        $userModel->save();
+
+        return $user;
+    }
+
     private function createUserfromEloquentModel(ModelsUser $userModel): User
     {
         return new User(

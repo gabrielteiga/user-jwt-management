@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('jwt.auth')->group(function () {
     Route::get('/user', [UserController::class, 'index']);
+    
+    Route::patch('/user', [UserController::class, 'edit']);
 });
 
 Route::post('/user', [UserController::class, 'create']);

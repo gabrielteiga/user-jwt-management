@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\Services\UserService;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
@@ -56,5 +57,23 @@ class UserController extends Controller
                 'message'   => "Failed with the user creation. Try again and contact TargetIT if the problem persists.",
                 'status'    => 'error'
             ], 422);
+    }
+
+    public function edit(EditUserRequest $request)
+    {
+        $request->validated();
+
+        $bodyRequest = $request->onlyInRules();
+
+        if(empty($bodyRequest)) 
+            return response()->json([
+                    'message'   => 'Nothing to update',
+                    'status'    => 'success',
+            ], 204);
+
+        $userId = auth()->user()->id;
+        $userUpdated = $this->userService->editUserData($userId, $bodyRequest);
+        
+        return response()->json($userUpdated, 200);
     }
 }
