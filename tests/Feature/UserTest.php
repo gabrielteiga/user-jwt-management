@@ -70,6 +70,28 @@ class UserTest extends TestCase
         $user->assertUnauthorized();
     }
 
+    public function test_can_edit_user_name_cpf_and_phone_number_with_valid_token_header(): void
+    {
+        $token = $this->createUserAndGetToken($this->userData);
+
+        $editUserData = [
+            'name'          => 'gabriel',
+            'email'         => 'itwontbeedit@example.com',
+            'cpf'           => '22211133344',
+            'phone_number'  => '51987654321'
+        ];
+
+        $response = $this->patchJson('api/user', $editUserData, ['Authorization' => "Bearer $token"]);
+
+        $response->assertOk()
+            ->assertJson([
+                'name'          => $editUserData['name'],
+                'email'         => $this->userData['email'],
+                'cpf'           => $editUserData['cpf'],
+                'phone_number'  => $editUserData['phone_number']
+            ]);
+    }
+
     private function createUserAndGetToken(array $userData): string
     {
         $user = $this->postJson('api/user', $userData);
