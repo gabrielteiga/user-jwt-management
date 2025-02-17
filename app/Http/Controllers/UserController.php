@@ -104,7 +104,7 @@ class UserController extends Controller
             $request->street,
             $request->number,
             $request->neighborhood,
-            $request->complement,
+            $request->complement ?? '',
             $request->zip_code
         );
 
