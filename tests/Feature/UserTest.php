@@ -27,4 +27,14 @@ class UserTest extends TestCase
             'status' => 'success'
         ]);
     }
+
+    public function test_cannot_create_user_without_email_field():void
+    {
+        $user = $this->userData;
+        unset($user['email']);
+
+        $response = $this->postJson('/api/user', $user);
+
+        $response->assertStatus(400);
+    }
 }
